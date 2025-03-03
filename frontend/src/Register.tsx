@@ -4,10 +4,10 @@ import axios from 'axios';
 const registerUrl = process.env.REACT_APP_registerUrl;
 
 const Register = () => {
-  const [ID, setID] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [ID, setID] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string|null>(null);
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {

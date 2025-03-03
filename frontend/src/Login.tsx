@@ -5,8 +5,8 @@ import { setUserSession } from './service/AuthService'
 const loginUrl = process.env.REACT_APP_loginUrl;
 
 const Login = (props:any) => {
-  const [ID, setID] = useState('');
-  const [password, setPassword] = useState('');
+  const [ID, setID] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string|null>(null);
 
   const submitHandler = (event:React.FormEvent<HTMLFormElement>) => {
