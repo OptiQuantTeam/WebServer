@@ -1,7 +1,7 @@
 const util =require('../utils/util')
 const auth =require('../utils/auth')
 
-function verify(requestBody){
+async function verify(requestBody){
   if(!requestBody || !requestBody.user.user_id || !requestBody.token) {
     return util.buildResponse(401, {
       verified: false,
