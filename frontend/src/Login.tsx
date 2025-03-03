@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { setUserSession } from './service/AuthService'
 
-const loginUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/login';
+const loginUrl = process.env.REACT_APP_loginUrl;
 
-const Login = (props) => {
+const Login = (props:any) => {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string|null>(null);
 
-  const submitHandler = (event) => {
+  const submitHandler = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (ID.trim() === '' || password.trim() === ''){
       setErrorMessage('Both ID and password are required');
@@ -19,7 +19,7 @@ const Login = (props) => {
     
     const requestConfig = {
       headers: {
-        'x-api-key': 'JQJiilHgU61t5MB9MMYIcaEhfiOPmmkL4W49KdaA'
+        'x-api-key': process.env.REACT_APP_x_api_key
       }
     }
     const requestBody = {

@@ -1,6 +1,7 @@
 import React from 'react';
+import { IComponent } from './interface/IComponent';
 
-const Home = () => {
+const Home = ()=> {
   return (
     <div>
       This is the home page!

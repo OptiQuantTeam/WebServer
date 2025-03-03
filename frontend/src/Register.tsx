@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-const registerUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/register';
+const registerUrl = process.env.REACT_APP_registerUrl;
 
 const Register = () => {
   const [ID, setID] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState<string|null>(null);
 
-  const submitHandler = (event) => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (ID.trim() === '' || email.trim() === '' || name.trim() === '' || password.trim() === ''){
       setMessage('All fields are required')
@@ -20,7 +20,7 @@ const Register = () => {
     
     const requestConfig = {
       headers: {
-        'x-api-key': 'JQJiilHgU61t5MB9MMYIcaEhfiOPmmkL4W49KdaA'
+        'x-api-key': process.env.REACT_APP_x_api_key
       }
     }
     const requestBody = {
