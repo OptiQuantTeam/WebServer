@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-const registerUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/register';
+const registerUrl = process.env.REACT_APP_registerUrl;
 
 const Register = () => {
   const [ID, setID] = useState('');
@@ -20,7 +20,7 @@ const Register = () => {
     
     const requestConfig = {
       headers: {
-        'x-api-key': 'JQJiilHgU61t5MB9MMYIcaEhfiOPmmkL4W49KdaA'
+        'x-api-key': process.env.REACT_APP_x_api_key
       }
     }
     const requestBody = {

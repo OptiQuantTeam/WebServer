@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { setUserSession } from './service/AuthService'
 
-const loginUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/login';
+const loginUrl = process.env.REACT_APP_loginUrl;
 
 const Login = (props:any) => {
   const [ID, setID] = useState('');
@@ -19,7 +19,7 @@ const Login = (props:any) => {
     
     const requestConfig = {
       headers: {
-        'x-api-key': 'JQJiilHgU61t5MB9MMYIcaEhfiOPmmkL4W49KdaA'
+        'x-api-key': process.env.REACT_APP_x_api_key
       }
     }
     const requestBody = {

@@ -9,7 +9,9 @@ import React, { useState, useEffect } from "react";
 import { getUser, getToken, setUserSession, resetUserSession } from "./service/AuthService";
 import axios from 'axios';
 
-const verifyTokenUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/verify';
+
+console.log(process.env.REACT_APP_ab)
+const verifyTokenUrl = process.env.REACT_APP_verifyTokenUrl;
 
 function App() {
   const [isAuthenicating, setAuthenicating] = useState(true);
@@ -21,7 +23,7 @@ function App() {
     }
     const requestConfig = {
       headers: {
-        'x-api-key': 'JQJiilHgU61t5MB9MMYIcaEhfiOPmmkL4W49KdaA'
+        'x-api-key': process.env.REACT_APP_x_api_key
       }
     }
     const requestBody = {
@@ -42,7 +44,7 @@ function App() {
   if (isAuthenicating && token) {
     return <div className="content">Authenicating...</div>
   }
-  
+  console.log(process.env.ab)
   return (
     <div className="App">
       <BrowserRouter>
