@@ -8,9 +8,9 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState<string|null>(null);
 
-  const submitHandler = (event) => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (ID.trim() === '' || email.trim() === '' || name.trim() === '' || password.trim() === ''){
       setMessage('All fields are required')

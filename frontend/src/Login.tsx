@@ -4,12 +4,12 @@ import { setUserSession } from './service/AuthService'
 
 const loginUrl = 'https://6ai91tqlw0.execute-api.ap-northeast-2.amazonaws.com/prod/login';
 
-const Login = (props) => {
+const Login = (props:any) => {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string|null>(null);
 
-  const submitHandler = (event) => {
+  const submitHandler = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (ID.trim() === '' || password.trim() === ''){
       setErrorMessage('Both ID and password are required');

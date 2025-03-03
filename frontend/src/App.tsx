@@ -15,7 +15,7 @@ function App() {
   const [isAuthenicating, setAuthenicating] = useState(true);
 
   useEffect(() => {
-    const token = getToken();
+    const token:string|null = getToken();
     if (token === 'undefined' || token === undefined || token === null || !token) {
       return;
     }
@@ -42,6 +42,7 @@ function App() {
   if (isAuthenicating && token) {
     return <div className="content">Authenicating...</div>
   }
+  
   return (
     <div className="App">
       <BrowserRouter>
