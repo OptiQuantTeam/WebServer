@@ -1,6 +1,7 @@
 const registerService = require('./service/register')
 const loginService = require('./service/login')
 const verifyService =require('./service/verify')
+const contentService = require('./service/content')
 const util = require('./utils/util')
 
 const registerPath = '/register';
@@ -27,6 +28,10 @@ exports.handler = async (event) => {
     case event.httpMethod === 'POST' && event.path === verifyPath:
       const verifyBody = JSON.parse(event.body)
       response =  await verifyService.verify(verifyBody);
+      break;
+    case event.httpMethod === 'POST' && event.path === contentPath:
+      const contentBody = JSON.parse(event.body)
+      response = await contentService.content(contentBody);
       break;
     default:
       response = util.buildResponse(404, '404 Not Found');
