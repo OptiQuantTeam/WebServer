@@ -10,7 +10,8 @@ const loginPath = '/login';
 const verifyPath = '/verify';
 const testPath = '/test';
 const contentPath = '/content';
-const settingPath = '/setting';
+const getSettingPath = '/content/getSetting';
+const updateSettingPath = '/content/updateSetting';
 
 exports.handler = async (event) => {
   console.log('Request Event', event);
@@ -36,9 +37,13 @@ exports.handler = async (event) => {
       const contentBody = JSON.parse(event.body)
       response = await contentService.content(contentBody);
       break;
-    case event.httpMethod === 'POST' && event.path === settingPath:
-      const settingBody = JSON.parse(event.body)
-      response = await settingService.setting(settingBody);
+    case event.httpMethod === 'POST' && event.path === getSettingPath:
+      const getSettingBody = JSON.parse(event.body)
+      response = await settingService.getSetting(getSettingBody);
+      break;
+    case event.httpMethod === 'POST' && event.path === updateSettingPath:
+      const updateSettingBody = JSON.parse(event.body)
+      response = await settingService.updateSetting(updateSettingBody);
       break;
     default:
       response = util.buildResponse(404, '404 Not Found');
