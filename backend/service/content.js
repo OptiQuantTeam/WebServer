@@ -3,14 +3,18 @@ AWS.config.update({
   region: 'ap-northeast-2'
 })
 const util = require('../utils/util');
-const getBinance = require('../utils/binance');
+const binance = require('../utils/binance');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = 'User';
 
 async function content(requestBody){
   const user_id = requestBody.user_id;
-
+  const token = requestBody.token;
+  const verification = auth.verifyToken(user_id, token);
+  if (!verification.verified){
+    return util.buildResponse(401, verification)
+  }
 
   const dynamoUser = await getUser(user_id.toLowerCase().trim());
   if(!dynamoUser || !dynamoUser.user_id){
@@ -26,7 +30,7 @@ async function content(requestBody){
   }
 
   // 가져올 데이터에 따라서 변수 바꿀 것
-  const tmpData = getBinance(dynamoUser.api_key, dynamoUser.secret_key);
+  const tmpData = binance.getBinance(dynamoUser.api_key, dynamoUser.secret_key);
 
   // 추가로 들어갈 정보가 있는지 생각해볼 것
   const response = {
@@ -38,7 +42,7 @@ async function content(requestBody){
 async function getUser(user_id){
   const params = {
     TableName: userTable,
-    key: {
+    Key: {
       user_id: user_id
     }
   }
