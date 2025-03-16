@@ -8,6 +8,7 @@ const registerPath = '/register';
 const loginPath = '/login';
 const verifyPath = '/verify';
 const testPath = '/test';
+const contentPath = '/content';
 
 exports.handler = async (event) => {
   console.log('Request Event', event);

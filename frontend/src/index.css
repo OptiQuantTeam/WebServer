@@ -145,7 +145,7 @@ form label {
 }
 
 /* 프리미엄 컨텐츠 스타일 */
-.premium-content {
+.content {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   padding: 2rem;
   border-radius: 10px;
@@ -154,13 +154,13 @@ form label {
   max-width: 800px;
 }
 
-.premium-content h1 {
+.content h1 {
   color: #2b343e;
   margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.premium-content p {
+.content p {
   color: #495057;
   line-height: 1.8;
   margin-bottom: 1rem;

@@ -9,15 +9,13 @@ import React, { useState, useEffect } from "react";
 import { getUser, getToken, setUserSession, resetUserSession } from "./service/AuthService";
 import axios from 'axios';
 
-
-console.log(process.env.REACT_APP_ab)
 const verifyTokenUrl = process.env.REACT_APP_verifyTokenUrl;
 
 function App() {
   const [isAuthenicating, setAuthenicating] = useState(true);
 
   useEffect(() => {
-    const token:string|null = getToken();
+    const token = getToken();
     if (token === 'undefined' || token === undefined || token === null || !token) {
       return;
     }
@@ -44,7 +42,6 @@ function App() {
   if (isAuthenicating && token) {
     return <div className="content">Authenicating...</div>
   }
-  console.log(process.env.ab)
   return (
     <div className="App">
       <BrowserRouter>

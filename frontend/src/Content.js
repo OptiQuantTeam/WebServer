@@ -1,10 +1,9 @@
 import React from 'react';
 import { getUser, resetUserSession } from './service/AuthService';
-import { IUser } from './interface/IUser';
 
-const Content = (props:any) => {
-  const user:IUser|null|undefined = getUser();
-  const name = user !== undefined && user ? user.name: '';
+const Content = (props) => {
+  const user = getUser();
+  const name = user !== 'undefined' && user ? user.name: '';
 
   const logoutHandler = () => {
     resetUserSession();

@@ -4,13 +4,13 @@ import axios from 'axios';
 const registerUrl = process.env.REACT_APP_registerUrl;
 
 const Register = () => {
-  const [ID, setID] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [message, setMessage] = useState<string|null>(null);
+  const [ID, setID] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState(null);
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event) => {
     event.preventDefault();
     if (ID.trim() === '' || email.trim() === '' || name.trim() === '' || password.trim() === ''){
       setMessage('All fields are required')
