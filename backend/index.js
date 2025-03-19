@@ -2,7 +2,6 @@ const registerService = require('./service/register')
 const loginService = require('./service/login')
 const verifyService =require('./service/verify')
 const contentService = require('./service/content')
-const settingService = require('./service/setting')
 const util = require('./utils/util')
 
 const registerPath = '/register';
@@ -10,8 +9,7 @@ const loginPath = '/login';
 const verifyPath = '/verify';
 const testPath = '/test';
 const contentPath = '/content';
-const getSettingPath = '/content/getSetting';
-const updateSettingPath = '/content/updateSetting';
+
 
 exports.handler = async (event) => {
   console.log('Request Event', event);
@@ -36,14 +34,6 @@ exports.handler = async (event) => {
     case event.httpMethod === 'POST' && event.path === contentPath:
       const contentBody = JSON.parse(event.body)
       response = await contentService.content(contentBody);
-      break;
-    case event.httpMethod === 'POST' && event.path === getSettingPath:
-      const getSettingBody = JSON.parse(event.body)
-      response = await settingService.getSetting(getSettingBody);
-      break;
-    case event.httpMethod === 'POST' && event.path === updateSettingPath:
-      const updateSettingBody = JSON.parse(event.body)
-      response = await settingService.updateSetting(updateSettingBody);
       break;
     default:
       response = util.buildResponse(404, '404 Not Found');

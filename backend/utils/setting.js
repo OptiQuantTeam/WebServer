@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 AWS.config.update({
   region: 'ap-northeast-2'
 })
-const util = require('../utils/util');
-const auth = require('../utils/auth');
+const util = require('./util');
+const auth = require('./auth');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = 'User';
@@ -29,6 +29,7 @@ async function getSetting(requestBody) {
     secret_key: dynamoUser.secret_key,
     name: dynamoUser.name,
     email: dynamoUser.email,
+    leverage: dynamoUser.leverage,
     ratio: dynamoUser.ratio,
     sl: dynamoUser.sl,
     tp: dynamoUser.tp,
@@ -42,7 +43,7 @@ async function getSetting(requestBody) {
     user: userInfo
   }
 
-  return util.buildResponse(200, response);
+  return response;
 }
 
 async function updateSetting(requestBody) {
@@ -53,7 +54,7 @@ async function updateSetting(requestBody) {
     return util.buildResponse(401, verification)
   }
 
-  const updateData = requestBody;
+  const updateData = requestBody.data;
   const result = await updateDB(user_id, updateData);
 
   if (!result){
@@ -67,7 +68,7 @@ async function updateSetting(requestBody) {
     updateAttributes: result.Attributes
   }
 
-  return util.buildResponse(200, response);
+  return response;
 }
 
 async function readDB(user_id){
@@ -95,6 +96,7 @@ async function updateDB(user_id, updateData){
                             #secret_key = :secret_key, \
                             #name = :name, \
                             #email = :email, \
+                            #leverage = :leverage, \
                             #ratio = :ratio, \
                             #sl = :sl, \
                             #tp = :tp, \
@@ -107,6 +109,7 @@ async function updateDB(user_id, updateData){
       '#secret_key': 'secret_key',
       '#name': 'name',
       '#email': 'email',
+      '#leverage': 'leverage',
       '#ratio': 'ratio',
       '#sl': 'sl',
       '#tp': 'tp',
@@ -120,6 +123,7 @@ async function updateDB(user_id, updateData){
       ':secret_key': updateData.secret_key,
       ':name': updateData.name,
       ':email': updateData.email,
+      ':leverage': updateData.leverage,
       ':ratio': updateData.ratio,
       ':sl': updateData.sl,
       ':tp': updateData.tp,

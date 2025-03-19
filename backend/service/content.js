@@ -4,6 +4,8 @@ AWS.config.update({
 })
 const util = require('../utils/util');
 const binance = require('../utils/binance');
+const auth = require('../utils/auth');
+const setting = require('../utils/setting');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = 'User';
@@ -11,6 +13,9 @@ const userTable = 'User';
 async function content(requestBody){
   const user_id = requestBody.user_id;
   const token = requestBody.token;
+  const type = requestBody.type;
+  let response;
+  
   const verification = auth.verifyToken(user_id, token);
   if (!verification.verified){
     return util.buildResponse(401, verification)
@@ -23,19 +28,29 @@ async function content(requestBody){
     })
   }
 
-  if(!dynamoUser || !dynamoUser.api_key || !dynamoUser.secret_key) {
-    return util.buildResponse(403, {
-      message: 'API KEY and SECRET KEY Not Found.'
-    })
+
+  switch (type) {
+    case 'contractList':
+      if(!dynamoUser || !dynamoUser.api_key || !dynamoUser.secret_key) {
+        return util.buildResponse(403, {
+          message: 'API KEY and SECRET KEY Not Found.'
+        })
+      }
+      const tmpData = binance.getContractList(dynamoUser.api_key, dynamoUser.secret_key, requestBody.symbol);
+      response = {
+        data : tmpData
+      };
+      break;
+    case 'getSetting':
+      response = await setting.getSetting(requestBody);
+      break;
+    case 'updateSetting':
+      response = await setting.updateSetting(requestBody);
+      break;
+    default:
+      break;
   }
 
-  // 가져올 데이터에 따라서 변수 바꿀 것
-  const tmpData = binance.getBinance(dynamoUser.api_key, dynamoUser.secret_key);
-
-  // 추가로 들어갈 정보가 있는지 생각해볼 것
-  const response = {
-    data : tmpData
-  }
 
   return util.buildResponse(200, response)
 }
