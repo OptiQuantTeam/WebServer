@@ -4,12 +4,12 @@ import { setUserSession } from './service/AuthService'
 
 const loginUrl = process.env.REACT_APP_loginUrl;
 
-const Login = (props:any) => {
+const Login = (props) => {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string|null>(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const submitHandler = (event:React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event) => {
     event.preventDefault();
     if (ID.trim() === '' || password.trim() === ''){
       setErrorMessage('Both ID and password are required');
@@ -29,7 +29,7 @@ const Login = (props:any) => {
 
     axios.post(loginUrl, requestBody, requestConfig).then((response) => {
       setUserSession(response.data.user, response.data.token);
-      props.history.push('/premium-content');
+      props.history.push('/content');
     }).catch((error) => {
       if (error.response.status === 401 || error.response.status === 403){
         setErrorMessage(error.response.data.message)

@@ -47,7 +47,7 @@ async function login(user) {
 async function getUser(user_id){
   const params = {
     TableName: userTable,
-    key: {
+    Key: {
       user_id: user_id
     }
   }
