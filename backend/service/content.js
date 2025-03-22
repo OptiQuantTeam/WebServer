@@ -36,9 +36,31 @@ async function content(requestBody){
           message: 'API KEY and SECRET KEY Not Found.'
         })
       }
-      const tmpData = binance.getContractList(dynamoUser.api_key, dynamoUser.secret_key, requestBody.symbol);
+      const contractData = binance.getContractList(dynamoUser.api_key, dynamoUser.secret_key, requestBody.symbol);
       response = {
-        data : tmpData
+        data : contractData
+      };
+      break;
+    case 'income':
+      if(!dynamoUser || !dynamoUser.api_key || !dynamoUser.secret_key) {
+        return util.buildResponse(403, {
+          message: 'API KEY and SECRET KEY Not Found.'
+        })
+      }
+      const incomeData = binance.getIncome(dynamoUser.api_key, dynamoUser.secret_key);
+      response = {
+        data : incomeData
+      };
+      break;
+    case 'futureBalance':
+      if(!dynamoUser || !dynamoUser.api_key || !dynamoUser.secret_key) {
+        return util.buildResponse(403, {
+          message: 'API KEY and SECRET KEY Not Found.'
+        })
+      }
+      const balanceData = binance.getFutureBalance(dynamoUser.api_key, dynamoUser.secret_key);
+      response = {
+        data : balanceData
       };
       break;
     case 'getSetting':
