@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { getToken, getUser } from '../service/AuthService';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 
 const contentUrl = process.env.REACT_APP_contentUrl;
 

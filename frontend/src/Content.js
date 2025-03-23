@@ -8,6 +8,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Collapse from '@mui/material/Collapse';
 import GraphIcon from '@mui/icons-material/ShowChart';
+import Income from './component/Income';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ContractIcon from '@mui/icons-material/AccountBalance';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -18,12 +19,14 @@ import Graph from './component/Graph';
 import ContractList from './component/ContractList';
 import Setting from './component/Setting';
 import axios from 'axios';
+import Balance from './component/Balance';
 
 const contentUrl = process.env.REACT_APP_contentUrl;
 
 const Content = (props) => {
   const [content, setContent] = useState('Default');
   const [setting, setSetting] = useState(null);
+  const [incomeList, setIncomeList] = useState(null);
   const [settingType, setSettingType] = useState(null);
   const [contractList, setContractList] = useState(null);
   const [openGraph, setOpenGraph] = useState(false);
@@ -31,6 +34,7 @@ const Content = (props) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [openBalance, setOpenBalance] = useState(false);
   const [openIncome, setOpenIncome] = useState(false);
+  const [balanceList, setBalanceList] = useState(null);
 
   const user = getUser();
   const name = user !== 'undefined' && user ? user.name : '';
@@ -38,6 +42,32 @@ const Content = (props) => {
   const logoutHandler = () => {
     resetUserSession();
     props.history.push('/login');
+  }
+
+  // Income 데이터를 가져오는 핸들러 추가
+  const incomeHandler = () => {
+    const token = getToken();
+    if (!token) {
+      return;
+    }
+
+    const requestConfig = {
+      headers: {
+        'x-api-key': process.env.REACT_APP_x_api_key
+      }
+    };
+    const requestBody = {
+      user_id: user.user_id,
+      token: token,
+      type: 'income'
+    };
+
+    axios.post(contentUrl, requestBody, requestConfig).then(response => {
+      setContent('Income');
+      setIncomeList(response.data);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   const settingHandler = (type) => {
@@ -66,8 +96,7 @@ const Content = (props) => {
     });
   }
 
-  const contractListHandler = (event) => {
-    event.preventDefault();
+  const contractListHandler = () => {
     const token = getToken();
     if (!token) {
       return;
@@ -111,6 +140,32 @@ const Content = (props) => {
   const handleIncomeClick = () => {
     setOpenIncome(!openIncome);
   };
+
+  // Balance 데이터를 가져오는 핸들러 추가
+  const balanceHandler = () => {
+    const token = getToken();
+    if (!token) {
+      return;
+    }
+
+    const requestConfig = {
+      headers: {
+        'x-api-key': process.env.REACT_APP_x_api_key
+      }
+    };
+    const requestBody = {
+      user_id: user.user_id,
+      token: token,
+      type: 'futureBalance'
+    };
+
+    axios.post(contentUrl, requestBody, requestConfig).then(response => {
+      setContent('Balance');
+      setBalanceList(response.data);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -172,8 +227,8 @@ const Content = (props) => {
           </ListItemButton>
           <Collapse in={openBalance} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={contractListHandler}>
-                <ListItemText primary="View BALANCE List" />
+              <ListItemButton sx={{ pl: 4 }} onClick={balanceHandler}>
+                <ListItemText primary="View Balance" />
               </ListItemButton>
             </List>
           </Collapse>
@@ -188,8 +243,8 @@ const Content = (props) => {
           </ListItemButton>
           <Collapse in={openIncome} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={contractListHandler}>
-                <ListItemText primary="View INCOME List" />
+              <ListItemButton sx={{ pl: 4 }} onClick={incomeHandler}>
+                <ListItemText primary="View Income List" />
               </ListItemButton>
             </List>
           </Collapse>
@@ -222,7 +277,9 @@ const Content = (props) => {
       <div style={{ flex: 1, padding: '20px' }}>
         {content === 'Graph' && <Graph />}
         {content === 'ContractList' && <ContractList contractList={contractList} />}
-        {content === 'Setting' && <Setting type={settingType} setting={setting} />}  
+        {content === 'Setting' && <Setting type={settingType} setting={setting} />}
+        {content === 'Income' && <Income incomeList={incomeList} />}
+        {content === 'Balance' && <Balance balanceList={balanceList} />}
       </div>
     </div>
   );
