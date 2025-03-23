@@ -168,118 +168,172 @@ const Content = (props) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      {/* 왼쪽 메뉴 */}
-      <div style={{ width: '250px', padding: '20px' }}>
-        <h3>Hello {name}! You have been logged in!!!</h3>
-        <input type="button" value="Logout" onClick={logoutHandler} /> <br />
-        <Button variant="contained">Hello world</Button>
-
-        <List
-          sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
-            </ListSubheader>
-          }
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      minHeight: '100vh',
+      height: '100vh',
+      overflow: 'hidden',
+      backgroundColor: 'white'
+    }}>
+      {/* 상단 헤더 */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        padding: '20px',
+        backgroundColor: 'white',
+        borderBottom: '1px solid #e0e0e0'
+      }}>
+        <h3 style={{ margin: 0 }}>Hello {name}!</h3>
+        <Button 
+          variant="outlined" 
+          onClick={logoutHandler}
+          sx={{
+            color: '#000',
+            borderColor: '#000',
+            '&:hover': {
+              backgroundColor: '#f5f5f5',
+              borderColor: '#000'
+            }
+          }}
         >
-          {/* Graph 항목 */}
-          <ListItemButton onClick={handleGraphClick}>
-            <ListItemIcon>
-              <GraphIcon />
-            </ListItemIcon>
-            <ListItemText primary="Graph" />
-            {openGraph ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={openGraph} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => setContent('Graph')}>
-                <ListItemText primary="View Graph" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-
-          {/* ContractList 항목 */}
-          <ListItemButton onClick={handleContractListClick}>
-            <ListItemIcon>
-              <ContractIcon />
-            </ListItemIcon>
-            <ListItemText primary="Contract List" />
-            {openContractList ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={openContractList} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={contractListHandler}>
-                <ListItemText primary="View Contract List" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-
-          {/* BALANCE 항목 */}
-          <ListItemButton onClick={handleBalanceClick}>
-            <ListItemIcon>
-              <AccountBalanceWalletIcon />
-            </ListItemIcon>
-            <ListItemText primary="BALANCE" />
-            {openBalance ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={openBalance} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={balanceHandler}>
-                <ListItemText primary="View Balance" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-
-          {/* INCOME 항목 */}
-          <ListItemButton onClick={handleIncomeClick}>
-            <ListItemIcon>
-              <AttachMoneyIcon />
-            </ListItemIcon>
-            <ListItemText primary="INCOME" />
-            {openIncome ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={openIncome} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={incomeHandler}>
-                <ListItemText primary="View Income List" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-          
-          {/* Setting 항목 */}
-          <ListItemButton onClick={handleSettingClick}>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Setting" />
-            {openSetting ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={openSetting} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('USER')}>
-                <ListItemText primary="USER" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('BINANCE')}>
-                <ListItemText primary="BINANCE" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('SLACK')}>
-                <ListItemText primary="SLACK" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-        </List>
+          Logout
+        </Button>
       </div>
 
-      {/* 우측 콘텐츠 영역 */}
-      <div style={{ flex: 1, padding: '20px' }}>
-        {content === 'Graph' && <Graph />}
-        {content === 'ContractList' && <ContractList contractList={contractList} />}
-        {content === 'Setting' && <Setting type={settingType} setting={setting} />}
-        {content === 'Income' && <Income incomeList={incomeList} />}
-        {content === 'Balance' && <Balance balanceList={balanceList} />}
+      {/* 메인 콘텐츠 영역 */}
+      <div style={{ 
+        display: 'flex', 
+        flex: 1,
+        overflow: 'hidden',
+        backgroundColor: 'white'
+      }}>
+        {/* 왼쪽 메뉴 */}
+        <div style={{ 
+          width: '250px', 
+          backgroundColor: 'white',
+          borderRight: '1px solid #e0e0e0',
+          overflow: 'auto'
+        }}>
+          <List
+            sx={{ 
+              width: '100%',
+              padding: 0,
+              bgcolor: 'white',
+              '& .MuiListItemButton-root': {
+                paddingY: 1.5,
+                '&:hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              },
+              '& .MuiListItemIcon-root': {
+                minWidth: '40px'
+              }
+            }}
+            component="nav"
+          >
+            {/* Graph 항목 */}
+            <ListItemButton onClick={handleGraphClick}>
+              <ListItemIcon>
+                <GraphIcon />
+              </ListItemIcon>
+              <ListItemText primary="Graph" />
+              {openGraph ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openGraph} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={() => setContent('Graph')}>
+                  <ListItemText primary="View Graph" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+            {/* ContractList 항목 */}
+            <ListItemButton onClick={handleContractListClick}>
+              <ListItemIcon>
+                <ContractIcon />
+              </ListItemIcon>
+              <ListItemText primary="Contract List" />
+              {openContractList ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openContractList} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={contractListHandler}>
+                  <ListItemText primary="View Contract List" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+            {/* BALANCE 항목 */}
+            <ListItemButton onClick={handleBalanceClick}>
+              <ListItemIcon>
+                <AccountBalanceWalletIcon />
+              </ListItemIcon>
+              <ListItemText primary="BALANCE" />
+              {openBalance ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openBalance} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={balanceHandler}>
+                  <ListItemText primary="View Balance" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+            {/* INCOME 항목 */}
+            <ListItemButton onClick={handleIncomeClick}>
+              <ListItemIcon>
+                <AttachMoneyIcon />
+              </ListItemIcon>
+              <ListItemText primary="INCOME" />
+              {openIncome ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openIncome} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={incomeHandler}>
+                  <ListItemText primary="View Income List" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+            {/* Setting 항목 */}
+            <ListItemButton onClick={handleSettingClick}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Setting" />
+              {openSetting ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openSetting} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('USER')}>
+                  <ListItemText primary="USER" />
+                </ListItemButton>
+                <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('BINANCE')}>
+                  <ListItemText primary="BINANCE" />
+                </ListItemButton>
+                <ListItemButton sx={{ pl: 4 }} onClick={() => settingHandler('SLACK')}>
+                  <ListItemText primary="SLACK" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+          </List>
+        </div>
+
+        {/* 우측 콘텐츠 영역 */}
+        <div style={{ 
+          flex: 1, 
+          padding: '20px',
+          overflow: 'auto',
+          backgroundColor: 'white'
+        }}>
+          {content === 'Graph' && <Graph />}
+          {content === 'ContractList' && <ContractList contractList={contractList} />}
+          {content === 'Setting' && <Setting type={settingType} setting={setting} />}
+          {content === 'Income' && <Income incomeList={incomeList} />}
+          {content === 'Balance' && <Balance balanceList={balanceList} />}
+        </div>
       </div>
     </div>
   );
