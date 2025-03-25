@@ -37,6 +37,7 @@ const Setting = (props) => {
 
   const [showApiKey, setShowApiKey] = useState(false);
   const [showSecretKey, setShowSecretKey] = useState(false);
+  const [showSlackToken, setShowSlackToken] = useState(false);
 
   
   const storeHandler = () => {
@@ -59,9 +60,9 @@ const Setting = (props) => {
         "sl": BINANCE.sl,
         "tp": BINANCE.tp,
         "ratio": BINANCE.ratio,
-        "slack_channel": SLACK.slack_channel,
-        "slack_token": SLACK.slack_token,
-        "slack_user": SLACK.slack_user
+        "slack_channel": SLACK.channel,
+        "slack_token": SLACK.token,
+        "slack_user": SLACK.user
       }
     }
     
@@ -251,19 +252,57 @@ const Setting = (props) => {
 
       {/* SLACK 필드들*/}
       {props.type === 'SLACK' && (
-        <div style={{ 
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '20px',
-          marginBottom: '20px'
-        }}>
-          <TextField id="standard-basic" label="slack_channel" variant="standard" 
-            value={SLACK.slack_channel} onChange={(e) => setSLACK({...SLACK, slack_channel: e.target.value})} />
-          <TextField id="standard-basic" label="slack_token" variant="standard" 
-            value={SLACK.token} onChange={(e) => setSLACK({...SLACK, token: e.target.value})} />
-          <TextField id="standard-basic" label="slack_user" variant="standard" 
-            value={SLACK.user} onChange={(e) => setSLACK({...SLACK, user: e.target.value})} />
-        </div>
+        <>
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '20px',
+            marginBottom: '20px'
+          }}>
+            <TextField 
+              id="standard-basic" 
+              label="slack_channel" 
+              variant="standard" 
+              value={SLACK.channel} 
+              onChange={(e) => setSLACK({...SLACK, channel: e.target.value})} 
+            />
+            <TextField 
+              id="standard-basic" 
+              label="slack_user" 
+              variant="standard" 
+              value={SLACK.user} 
+              onChange={(e) => setSLACK({...SLACK, user: e.target.value})} 
+            />
+          </div>
+
+          <div style={{ 
+            marginBottom: '20px'
+          }}>
+            <TextField 
+              fullWidth
+              id="standard-basic" 
+              label="slack_token" 
+              variant="standard" 
+              type={showSlackToken ? 'text' : 'password'}
+              value={SLACK.token} 
+              onChange={(e) => setSLACK({...SLACK, token: e.target.value})}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle slack token visibility"
+                      onClick={() => setShowSlackToken(!showSlackToken)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showSlackToken ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+        </>
       )}
 
       <Button variant="contained" onClick={storeHandler}>Store</Button>

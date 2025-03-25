@@ -1,45 +1,53 @@
-import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
-import { getToken } from './service/AuthService'; // getToken을 가져옴
+import React from 'react';
+import Typography from '@mui/material/Typography';
 
 const Home = () => {
-  const options = ["수익률 차트", "거래 내역", "환경 설정"]; // 목록 리스트
-  const [selectedOption, setSelectedOption] = useState("");
-  
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
-  const token = getToken(); // 토큰 가져오기
-
   return (
-    <div>
-      <Typography variant="h5" gutterBottom>
-        OptiquantTeam
-      </Typography>
-
-      {token ? ( // 로그인한 경우 Select 목록 표시
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">옵션 선택</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={selectedOption}
-            label="옵션 선택"
-            onChange={handleChange}
-          >
-            {options.map((option, index) => (
-              <MenuItem key={index} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : ( // 로그인하지 않은 경우 메시지 표시
-        <Typography variant="body1" color="error">
-          로그인이 필요합니다.
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column',
+      minHeight: '80vh',
+      position: 'relative'  // 개발자 이름 위치 추가
+    }}>
+      {/* 헤더와 팀 이름 */}
+      <div style={{
+        textAlign: 'center',
+        padding: '40px 0',
+        borderBottom: '1px solid #e0e0e0'
+      }}>
+        <Typography variant="h2" style={{
+          fontWeight: 'bold',
+          marginBottom: '10px'
+        }}>
+          OptiQuant
         </Typography>
-      )}
+        <Typography variant="h4" style={{
+          color: '#666',
+          marginBottom: '20px'
+        }}>
+          OptiquantTeam
+        </Typography>
+      </div>
+
+      {/* 개발자 이름 */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        padding: '10px',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '5px',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+      }}>
+        <Typography variant="subtitle1" style={{
+          fontStyle: 'italic',
+          color: '#666'
+        }}>
+          201901184 신승우
+          202001645 양재혁
+          202001505 문현준
+        </Typography>
+      </div>
     </div>
   );
 };
