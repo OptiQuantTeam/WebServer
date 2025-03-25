@@ -4,6 +4,9 @@ import Button from '@mui/material/Button';
 import { getToken, getUser } from '../service/AuthService';
 import axios from 'axios';
 import { useState} from 'react';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const contentUrl = process.env.REACT_APP_contentUrl;
 
@@ -32,10 +35,11 @@ const Setting = (props) => {
     'user': props.setting.user.slack_user || ''
   });
 
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [showSecretKey, setShowSecretKey] = useState(false);
 
   
   const storeHandler = () => {
-    console.log(props.setting);
     const requestConfig = {
       headers: {
         'x-api-key': process.env.REACT_APP_x_api_key
@@ -68,24 +72,203 @@ const Setting = (props) => {
     })
   }
 
-  return <div>
-    Setting <br/>
-    {props.type === 'USER' && <TextField id="standard-basic" label="user_id" variant="standard" value={USER.id} onChange={(e) => setUSER({...USER, id: e.target.value})} />}
-    {props.type === 'USER' && <TextField id="standard-basic" label="name" variant="standard" value={USER.name} onChange={(e) => setUSER({...USER, name: e.target.value})} />}
-    {props.type === 'USER' && <TextField id="standard-basic" label="email" variant="standard" value={USER.email} onChange={(e) => setUSER({...USER, email: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="api_key" variant="standard" value={BINANCE.api_key} onChange={(e) => setBINANCE({...BINANCE, api_key: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="secret_key" variant="standard" value={BINANCE.secret_key} onChange={(e) => setBINANCE({...BINANCE, secret_key: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="type" variant="standard" value={BINANCE.type} onChange={(e) => setBINANCE({...BINANCE, type: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="leverage" variant="standard" value={BINANCE.leverage} onChange={(e) => setBINANCE({...BINANCE, leverage: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="sl" variant="standard" value={BINANCE.sl} onChange={(e) => setBINANCE({...BINANCE, sl: e.target.value})} />} 
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="tp" variant="standard" value={BINANCE.tp} onChange={(e) => setBINANCE({...BINANCE, tp: e.target.value})} />}
-    {props.type === 'BINANCE' && <TextField id="standard-basic" label="ratio" variant="standard" value={BINANCE.ratio} onChange={(e) => setBINANCE({...BINANCE, ratio: e.target.value})} />}
-    {props.type === 'SLACK' && <TextField id="standard-basic" label="slack_channel" variant="standard" value={SLACK.slack_channel} onChange={(e) => setSLACK({...SLACK, slack_channel: e.target.value})} />}
-    {props.type === 'SLACK' && <TextField id="standard-basic" label="slack_token" variant="standard" value={SLACK.token} onChange={(e) => setSLACK({...SLACK, token: e.target.value})} />}
-    {props.type === 'SLACK' && <TextField id="standard-basic" label="slack_user" variant="standard" value={SLACK.user} onChange={(e) => setSLACK({...SLACK, user: e.target.value})} />}
-    <Button variant="contained" onClick={storeHandler}>Store</Button>
-    
-  </div>;
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>Setting</h2>
+      
+      {/* BINANCE 필드들 */}
+      {props.type === 'BINANCE' && (
+        <>
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            marginBottom: '30px'
+          }}>
+            <TextField 
+              fullWidth
+              id="standard-basic" 
+              label="api_key" 
+              variant="standard" 
+              type={showApiKey ? 'text' : 'password'}
+              value={BINANCE.api_key} 
+              onChange={(e) => setBINANCE({...BINANCE, api_key: e.target.value})}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle api key visibility"
+                      onClick={() => setShowApiKey(!showApiKey)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showApiKey ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField 
+              fullWidth
+              id="standard-basic" 
+              label="secret_key" 
+              variant="standard" 
+              type={showSecretKey ? 'text' : 'password'}
+              value={BINANCE.secret_key} 
+              onChange={(e) => setBINANCE({...BINANCE, secret_key: e.target.value})}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle secret key visibility"
+                      onClick={() => setShowSecretKey(!showSecretKey)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showSecretKey ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+            gap: '20px',
+            marginBottom: '20px'
+          }}>
+            <FormControl variant="standard" fullWidth>
+              <InputLabel>Type</InputLabel>
+              <Select
+                value={BINANCE.type}
+                onChange={(e) => setBINANCE({...BINANCE, type: e.target.value})}
+              >
+                <MenuItem value="MARKET">MARKET</MenuItem>
+                <MenuItem value="LIMIT">LIMIT</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <FormControl variant="standard" fullWidth>
+              <InputLabel>Leverage</InputLabel>
+              <Select
+                value={BINANCE.leverage}
+                onChange={(e) => setBINANCE({...BINANCE, leverage: e.target.value})}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200,
+                      overflow: 'auto'
+                    }
+                  }
+                }}
+              >
+                {[...Array(10)].map((_, index) => (
+                  <MenuItem key={index + 1} value={index + 1}>
+                    {index + 1}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl variant="standard" fullWidth>
+              <InputLabel>SL (%)</InputLabel>
+              <Select
+                value={BINANCE.sl}
+                onChange={(e) => setBINANCE({...BINANCE, sl: e.target.value})}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200,
+                      overflow: 'auto'
+                    }
+                  }
+                }}
+              >
+                {[...Array(100)].map((_, index) => (
+                  <MenuItem key={index + 1} value={index + 1}>
+                    {index + 1}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl variant="standard" fullWidth>
+              <InputLabel>TP (%)</InputLabel>
+              <Select
+                value={BINANCE.tp}
+                onChange={(e) => setBINANCE({...BINANCE, tp: e.target.value})}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200,
+                      overflow: 'auto'
+                    }
+                  }
+                }}
+              >
+                {[...Array(100)].map((_, index) => (
+                  <MenuItem key={index + 1} value={index + 1}>
+                    {index + 1}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl variant="standard" fullWidth>
+              <InputLabel>Ratio (%)</InputLabel>
+              <Select
+                value={BINANCE.ratio}
+                onChange={(e) => setBINANCE({...BINANCE, ratio: e.target.value})}
+              >
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={75}>75</MenuItem>
+                <MenuItem value={100}>100</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </>
+      )}
+
+      {/* USER 필드들*/}
+      {props.type === 'USER' && (
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '20px',
+          marginBottom: '20px'
+        }}>
+          <TextField id="standard-basic" label="user_id" variant="standard" 
+            value={USER.id} onChange={(e) => setUSER({...USER, id: e.target.value})} />
+          <TextField id="standard-basic" label="name" variant="standard" 
+            value={USER.name} onChange={(e) => setUSER({...USER, name: e.target.value})} />
+          <TextField id="standard-basic" label="email" variant="standard" 
+            value={USER.email} onChange={(e) => setUSER({...USER, email: e.target.value})} />
+        </div>
+      )}
+
+      {/* SLACK 필드들*/}
+      {props.type === 'SLACK' && (
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '20px',
+          marginBottom: '20px'
+        }}>
+          <TextField id="standard-basic" label="slack_channel" variant="standard" 
+            value={SLACK.slack_channel} onChange={(e) => setSLACK({...SLACK, slack_channel: e.target.value})} />
+          <TextField id="standard-basic" label="slack_token" variant="standard" 
+            value={SLACK.token} onChange={(e) => setSLACK({...SLACK, token: e.target.value})} />
+          <TextField id="standard-basic" label="slack_user" variant="standard" 
+            value={SLACK.user} onChange={(e) => setSLACK({...SLACK, user: e.target.value})} />
+        </div>
+      )}
+
+      <Button variant="contained" onClick={storeHandler}>Store</Button>
+    </div>
+  );
 };
 
 export default Setting;
